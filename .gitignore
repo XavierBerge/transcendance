@@ -1,0 +1,24 @@
+# Environnement virtuel
+venv/
+*.pyc
+__pycache__/
+
+# Fichiers de configuration
+*.env
+
+# Bases de données locales
+db.sqlite3
+
+# Logs
+*.log
+
+# Caches et fichiers temporaires
+*.py[cod]
+*.so
+.DS_Store
+.idea/
+.vscode/
+
+# Django staticfiles
+/static/
+
