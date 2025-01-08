@@ -11,18 +11,20 @@
 </head>
 <body>
     <header>
-        <nav>
-            <div class="navigator">
-                <img src="logo.png" alt="Logo" class="logo">
-                <div class="button-group">
-                    <button id="home-button">ACCUEIL</button>
-                    <button id="dashboard-button">DASHBOARD</button>
-                    <button id="chat-button">CHAT</button>
-                    <button id="connexion-button">CONNEXION</button>
-					<button id="signup-navbar-button">S'INSCRIRE</button>
-                </div>
-            </div>
-        </nav>
+		<nav>
+			<div class="navigator">
+				<img src="logo.png" alt="Logo" class="logo">
+				<div class="button-group">
+					<button id="home-button">ACCUEIL</button>
+					<button id="dashboard-button">DASHBOARD</button>
+					<button id="chat-button">CHAT</button>
+					<button id="connexion-button" class="auth-button">CONNEXION</button>
+					<button id="signup-navbar-button" class="auth-button">S'INSCRIRE</button>
+					<button id="logout-button" class="auth-button" style="display:none;">DECONNEXION</button>
+					<button id="user-info-button" class="auth-button" style="display:none;"></button>
+				</div>
+			</div>
+		</nav>			
     </header>
 
     <!-- Contenu principal -->
@@ -32,6 +34,7 @@
     </main>
 
     <!-- Formulaire de connexion -->
+<!-- Formulaire de connexion -->
 	<div id="login-form" data-view="login" style="display: none;">
 		<form>
 			<h2>Connexion</h2>
@@ -41,7 +44,11 @@
 			<label for="password">Mot de passe :</label>
 			<input type="password" id="password" name="password" required>
 			<br><br>
-			<button type="submit">Se connecter</button>
+			<!-- Bouton pour une connexion normale -->
+			<button type="submit" id="normal-login-button">Se connecter</button>
+			<!-- Bouton pour une connexion avec 42 -->
+			<button type="button" id="login-42-button">Se connecter avec 42</button>
+			<br><br>
 			<button type="button" id="signup-button">S'inscrire</button>
 		</form>
 	</div>
@@ -62,6 +69,8 @@
 			<button type="button" id="back-to-login">Déjà inscrit? Se connecter</button>
 		</form>
 	</div>
+
+
 	<!-- ChatBox-->
 	<div id="chat-content"  data-view="chat" style="display:none;">
 		<div class="chat-history">

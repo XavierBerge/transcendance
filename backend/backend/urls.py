@@ -17,9 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from users.views import SignupView
+from users.views import Redirect42View, Callback42View, CheckAuthView, LoginView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/signup/', SignupView.as_view(), name='signup'), # route d'API defini pour enregistrer un utilisateur
+	path('42/login/', Redirect42View.as_view(), name='login_42'),
+    path('auth/42/callback/', Callback42View.as_view(), name='callback_42'),
+	path('auth/check/', CheckAuthView.as_view(), name='check_auth'),
+	path('auth/login/', LoginView.as_view(), name='login'),
+	path('auth/logout/', LogoutView.as_view(), name='logout'),
 ]
-

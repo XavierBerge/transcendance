@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,8 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!go^c$ciu1sk_8%m*9a6%#nr_&i-*fc3ekhe3w4fg@9yk@3alr'
-
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key-for-dev')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -137,7 +139,26 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOW_ALL_ORIGINS = True  # Ou spécifiez les domaines autorisés
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5500",  # Frontend local
+    "http://localhost:5500",  # Parfois utile pour localhost explicite
+]
+
+CORS_ALLOW_CREDENTIALS = True  # Nécessaire pour gérer les cookies ou sessions
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5500"]
+
+
 
 AUTH_USER_MODEL = 'users.CustomUser'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Backend par défaut pour l'authentification
+]
+
+API_42_CLIENT_ID = os.getenv('API_42_CLIENT_ID')
+API_42_CLIENT_SECRET = os.getenv('API_42_CLIENT_SECRET')
+API_42_REDIRECT_URI = os.getenv('API_42_REDIRECT_URI')
+
+
 
