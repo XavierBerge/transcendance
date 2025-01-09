@@ -217,10 +217,43 @@ normalLoginButton.addEventListener('click', async (event) => {
 
 
 
+// Après la connexion réussie via OAuth 42
 const login42Button = document.getElementById('login-42-button');
 login42Button.addEventListener('click', () => {
     window.location.href = 'http://localhost:8000/42/login/';
 });
+
+// Cette fonction est appelée après la redirection vers l'index.
+function fetchUserInfo() {
+    fetch('http://localhost:8000/api/user-info/')  // Utilisez un nouvel endpoint pour obtenir les infos utilisateur
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Utilisateur non connecté');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Récupérer le pseudo de l'utilisateur et l'afficher dans la page
+            const username = data.username;
+            updateNavbar(username);
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des informations utilisateur:', error);
+            updateNavbar(null);
+        });
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const username = getCookie('username');
+    if (username) {
+        updateNavbar(username);  // Mettez à jour la navbar si l'utilisateur est connecté
+    } else {
+        fetchUserInfo();  // Sinon, essayez de récupérer les informations utilisateur
+    }
+});
+
 
 const logoutButton = document.getElementById('logout-button');
 const userInfoButton = document.getElementById('user-info-button');
@@ -243,20 +276,22 @@ function updateNavbar(username) {
     }
 }
 
+
 window.addEventListener('load', async () => {
-    // Vérification du token d'authentification dans le stockage local
-    const token = localStorage.getItem('access_token');
-    if (token) {
-        // L'utilisateur est connecté, mettez à jour la navbar
-        updateNavbar('Utilisateur connecté');
+    // Vérifier si l'utilisateur est connecté en utilisant le cookie ou la session
+    const username = getCookie('username');  // Récupérer le pseudo depuis le cookie
+    if (username) {
+        // Si l'utilisateur est connecté, afficher le message de bienvenue et les boutons appropriés
+        updateNavbar(username);
         changeView('home');
         history.pushState({ view: 'home' }, '', '#home');
     } else {
-        // L'utilisateur n'est pas connecté, afficher la page de login
+        // Si l'utilisateur n'est pas connecté, afficher la page de login
         updateNavbar(null);
         changeView('login');
     }
 });
+
 
 
 
@@ -279,6 +314,52 @@ logoutButton.addEventListener('click', async () => {
         console.error('Erreur lors de la déconnexion:', error);
     }
 });
+
+
+// Fonction pour récupérer la valeur d'un cookie par son nom
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\/\\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+
+
+
+// Cibler les éléments nécessaires
+
+const userDropdown = document.getElementById('user-dropdown');
+const viewProfileButton = document.getElementById('view-profile');
+const editProfileButton = document.getElementById('edit-profile');
+
+// Fonction pour afficher le menu déroulant de l'utilisateur
+userInfoButton.addEventListener('click', () => {
+    // Afficher ou masquer le menu déroulant
+    userDropdown.style.display = userDropdown.style.display === 'none' || userDropdown.style.display === '' ? 'block' : 'none';
+});
+
+// Action pour voir le profil
+viewProfileButton.addEventListener('click', () => {
+    // Changer de vue vers le profil de l'utilisateur (tu peux définir une vue spécifique ici)
+    console.log('Voir le profil');
+    // Ici tu pourrais appeler une fonction pour afficher le profil de l'utilisateur
+});
+
+// Action pour modifier le profil
+editProfileButton.addEventListener('click', () => {
+    // Changer de vue vers la page de modification du profil
+    console.log('Modifier le profil');
+    // Ici tu pourrais appeler une fonction pour afficher un formulaire de modification
+});
+
+// Fermer le menu déroulant lorsque l'utilisateur clique en dehors de celui-ci
+window.addEventListener('click', (event) => {
+    if (!userInfoButton.contains(event.target) && !userDropdown.contains(event.target)) {
+        userDropdown.style.display = 'none';
+    }
+});
+
 
 
 

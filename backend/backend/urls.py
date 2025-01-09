@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from users.views import SignupView
-from users.views import Redirect42View, Callback42View, CheckAuthView, LoginView, LogoutView
+from users.views import Redirect42View, Callback42View, CheckAuthView, LoginView, LogoutView, UserInfoView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +27,6 @@ urlpatterns = [
 	path('auth/check/', CheckAuthView.as_view(), name='check_auth'),
 	path('auth/login/', LoginView.as_view(), name='login'),
 	path('auth/logout/', LogoutView.as_view(), name='logout'),
+	path('auth/user-info/', UserInfoView.as_view(), name='user-info'),
+
 ]

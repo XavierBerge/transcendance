@@ -90,9 +90,18 @@ class Callback42View(APIView):
         # Créer ou récupérer l'utilisateur dans la base de données
         user, created = CustomUser.objects.get_or_create(username=username, defaults={'email': email})
 
-        # Connecter l'utilisateur et rediriger vers l'index
+        # Connecter l'utilisateur
         login(request, user)
-        return redirect('http://127.0.0.1:5500/frontend/index.html')  # Redirige vers l'URL d'accueil
+
+        # Rediriger vers le frontend avec un message personnalisé et le pseudo dans un cookie
+        frontend_url = 'http://127.0.0.1:5500/frontend/index.html'  # URL de votre frontend
+        response = redirect(frontend_url)
+
+        # Ajouter le pseudo dans un cookie
+        response.set_cookie('username', username)  # On stocke le pseudo dans un cookie
+
+        return response
+
 
     
 
@@ -128,3 +137,20 @@ class LoginView(APIView):
 
         else:
             return Response({'error': 'Nom d’utilisateur ou mot de passe incorrect.'}, status=401)
+        
+
+
+class UserInfoView(APIView):
+    """
+    Vue pour récupérer les informations de l'utilisateur connecté.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            return Response({
+                'username': request.user.username,
+                'email': request.user.email
+            })
+        else:
+            return Response({'error': 'Utilisateur non connecté'}, status=401)
+
+
