@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from users.views import SignupView
 from users.views import Redirect42View, Callback42View, CheckAuthView, LoginView, LogoutView, UserInfoView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +31,4 @@ urlpatterns = [
 	path('auth/logout/', LogoutView.as_view(), name='logout'),
 	path('auth/user-info/', UserInfoView.as_view(), name='user-info'),
 
-]
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

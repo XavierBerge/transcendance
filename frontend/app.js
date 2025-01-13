@@ -225,7 +225,7 @@ login42Button.addEventListener('click', () => {
 
 // Cette fonction est appelée après la redirection vers l'index.
 function fetchUserInfo() {
-    fetch('http://localhost:8000/api/user-info/')  // Utilisez un nouvel endpoint pour obtenir les infos utilisateur
+    fetch('http://localhost:8000/auth/user-info/')  // Utilisez un nouvel endpoint pour obtenir les infos utilisateur
         .then(response => {
             if (!response.ok) {
                 throw new Error('Utilisateur non connecté');
